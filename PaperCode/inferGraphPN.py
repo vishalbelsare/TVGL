@@ -1045,8 +1045,8 @@ def Prox_penalty(a_ij, a_ji, eta, index_penalty):
         elif index_penalty == 4:
             e = Prox_infnorm(A_ij - A_ji + d, alpha*eta) -d 
         else:
-            MaxIter = 100   
-            eps = 1e-3
+            MaxIter = 250   
+            eps = 1e-4
             [Z_ij, Z_ji] = Prox_node_penalty(A_ij, A_ji, eta, MaxIter, eps)
             z_ij = (numpy.squeeze(numpy.asarray(Z_ij[numpy.triu_indices(n)])))
             z_ji = (numpy.squeeze(numpy.asarray(Z_ji[numpy.triu_indices(n)])))
@@ -1120,7 +1120,7 @@ def ADMM_x(entry):
         numpymat = cvxpyMat.value
         n_t=1 # Assume number of samples is 1 at each node, need to be alterned alter
         # Iterate through all neighbors of the node
-        mat_shape = (int(numpymat.shape[1] * ( numpymat.shape[1]+1 )/2.0),)
+        mat_shape = (numpymat.shape[1] *  ( numpymat.shape[1]+1 )/2.0 ,)
         a = numpy.zeros(mat_shape) 
 #        print 'degree = ', entry[X_DEG]
         for i in xrange(entry[X_DEG]):  # entry[X_DEG] = 3 if the node is neither first and the last one    
@@ -1197,7 +1197,7 @@ def ADMM_z(entry, index_penalty = 1):
     
     #Select this parameter to determine which edge penalty to use:
     #1: L1-norm, 2: L2-norm, 3: Laplacian, 4: L-inf norm, 5: Perturbed-node
-    index_penalty = 1
+    index_penalty = 5
     
     #-----------------------Proximal operator ---------------------------
     if index_penalty != 2:
